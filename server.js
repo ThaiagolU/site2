@@ -10,8 +10,11 @@ const PORT = process.env.PORT || 3000;
 
 // Conectar ao MongoDB
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('Conectado ao MongoDB'))
-  .catch((err) => console.error('Erro ao conectar ao MongoDB', err));
+  .then(() => console.log('Conectado ao MongoDB com sucesso'))
+  .catch((err) => {
+    console.error('Erro ao conectar ao MongoDB:', err.message);
+    process.exit(1);  // Encerra o servidor se a conexão falhar
+  });
 
 // Middleware para tratar requisições com JSON
 app.use(express.json());
