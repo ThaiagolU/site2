@@ -1,7 +1,7 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js';  // Certifique-se de que o modelo está correto
+import User from '../models/User.js';  // Certifique-se que o modelo está correto
 
 const router = express.Router();
 
@@ -19,13 +19,14 @@ router.post('/register', async (req, res) => {
     // Criptografar a senha
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Criar um novo usuário
+    // Criar novo usuário
     const newUser = new User({ name, email, password: hashedPassword });
     await newUser.save();
 
-    res.status(201).json({ message: 'Usuário cadastrado com sucesso' });
+    return res.status(201).json({ message: 'Usuário cadastrado com sucesso' });
   } catch (error) {
-    res.status(500).json({ message: 'Erro no servidor', error });
+    console.error('Erro no cadastro:', error);  // Exibe o erro detalhado no servidor
+    return res.status(500).json({ message: 'Erro no servidor ao tentar cadastrar usuário', error: error.message });
   }
 });
 
@@ -49,9 +50,10 @@ router.post('/login', async (req, res) => {
     // Gerar o token JWT
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    res.json({ token, message: 'Login bem-sucedido' });
+    return res.json({ token, message: 'Login bem-sucedido' });
   } catch (error) {
-    res.status(500).json({ message: 'Erro no servidor', error });
+    console.error('Erro no login:', error);  // Exibe o erro detalhado no servidor
+    return res.status(500).json({ message: 'Erro no servidor ao tentar fazer login', error: error.message });
   }
 });
 
