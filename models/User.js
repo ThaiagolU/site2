@@ -14,7 +14,12 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now  // Registra a data de criação automaticamente
   }
 });
 
+// Exporta o modelo 'User', que cria a coleção 'users' no banco de dados 'myUserDatabase'
 export default mongoose.model('User', UserSchema);

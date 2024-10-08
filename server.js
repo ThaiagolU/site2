@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import authRoutes from './routes/auth.js';
 
-dotenv.config();
+dotenv.config();  // Carregar variáveis de ambiente do arquivo .env
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -13,7 +13,7 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
   .then(() => console.log('Conectado ao MongoDB'))
   .catch((err) => console.error('Erro ao conectar ao MongoDB', err));
 
-// Middleware para JSON
+// Middleware para tratar requisições com JSON
 app.use(express.json());
 
 // Rotas de autenticação
