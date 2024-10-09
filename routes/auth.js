@@ -25,7 +25,7 @@ router.post('/register', async (req, res) => {
 
     return res.status(201).json({ message: 'Usuário cadastrado com sucesso' });
   } catch (error) {
-    console.error('Erro no cadastro:', error);  // Logar o erro detalhado no servidor
+    console.error('Erro no cadastro:', error.message);
     return res.status(500).json({ message: 'Erro no servidor ao tentar cadastrar usuário', error: error.message });
   }
 });
@@ -52,7 +52,7 @@ router.post('/login', async (req, res) => {
 
     return res.json({ token, message: 'Login bem-sucedido' });
   } catch (error) {
-    console.error('Erro no login:', error);  // Logar o erro detalhado no servidor
+    console.error('Erro no login:', error.message);
     return res.status(500).json({ message: 'Erro no servidor ao tentar fazer login', error: error.message });
   }
 });

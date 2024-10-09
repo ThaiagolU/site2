@@ -29,39 +29,46 @@
     </div>
 
     <script>
+        // Captura o formulário e os campos de sucesso e erro
         const form = document.getElementById('registerForm');
         const successMessage = document.getElementById('successMessage');
         const errorMessage = document.getElementById('errorMessage');
 
+        // Adiciona o evento de submissão no formulário
         form.addEventListener('submit', async (event) => {
-            event.preventDefault();  // Impede o envio padrão do formulário
+            event.preventDefault();  // Impede o comportamento padrão do formulário
 
+            // Captura os valores do formulário
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('senha').value;
 
             try {
+                // Envia a requisição para o backend
                 const response = await fetch('/api/auth/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ name, email, password }),
+                    body: JSON.stringify({ name, email, password }),  // Dados enviados como JSON
                 });
 
-                const data = await response.json();
+                const data = await response.json();  // Recebe a resposta do backend como JSON
 
                 if (response.ok) {
+                    // Se o registro for bem-sucedido, exibe uma mensagem de sucesso
                     successMessage.textContent = 'Usuário cadastrado com sucesso!';
                     form.reset();  // Limpa o formulário após o sucesso
-                    errorMessage.textContent = '';
+                    errorMessage.textContent = '';  // Limpa qualquer mensagem de erro
                 } else {
+                    // Exibe uma mensagem de erro se a resposta for negativa
                     errorMessage.textContent = data.message || 'Erro ao cadastrar';
-                    successMessage.textContent = '';
+                    successMessage.textContent = '';  // Limpa a mensagem de sucesso
                 }
             } catch (error) {
+                // Exibe uma mensagem de erro em caso de falha no servidor
                 errorMessage.textContent = 'Erro no servidor, tente novamente mais tarde';
-                successMessage.textContent = '';
+                successMessage.textContent = '';  // Limpa a mensagem de sucesso
             }
         });
     </script>
