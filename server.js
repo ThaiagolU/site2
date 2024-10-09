@@ -3,16 +3,10 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import authRoutes from './routes/auth.js';
 
-dotenv.config();  // Carregar variáveis de ambiente
+dotenv.config();  // Carregar variáveis de ambiente do arquivo .env
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-// Verificar se a MONGO_URI está definida corretamente
-if (!process.env.MONGO_URI) {
-  console.error('Erro: A variável MONGO_URI não está definida no arquivo .env');
-  process.exit(1);  // Encerra o servidor se a variável não está definida
-}
 
 // Conectar ao MongoDB
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -27,6 +21,9 @@ app.use(express.json());
 
 // Rotas de autenticação
 app.use('/api/auth', authRoutes);
+
+// Servir arquivos estáticos (HTML, CSS, etc.)
+app.use(express.static('public'));
 
 // Iniciar o servidor
 app.listen(PORT, () => {
