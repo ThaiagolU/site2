@@ -1,8 +1,9 @@
 {
     "name": "meu-projeto",
-    "version": "1.0.0",
+    "version": "20.15.1",
     "description": "Projeto de autenticação com Node.js, MySQL e Sequelize",
     "main": "server.js",
+    "type": "module",
     "scripts": {
       "start": "node server.js"
     },
