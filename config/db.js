@@ -1,18 +1,19 @@
 import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
 
-dotenv.config();  // Carrega variáveis de ambiente do arquivo .env
+// Carrega as variáveis de ambiente do arquivo .env
+dotenv.config();
 
 // Configuração do Sequelize para conectar ao MySQL
 const sequelize = new Sequelize(
-  process.env.DB_NAME,       // Nome do banco de dados
-  process.env.DB_USER,       // Usuário do MySQL
-  process.env.DB_PASSWORD,   // Senha do MySQL
+  process.env.meu_projeto,       // Nome do banco de dados
+  process.env.meu_projeto_user,       // Usuário do banco de dados
+  process.env.GxjqB2VQL6QXCgJYZ3xuXCmKWQsNNQOD,   // Senha do banco de dados
   {
-    host: process.env.DB_HOST,  // Host do MySQL (localhost ou remoto)
-    dialect: 'mysql',           // Tipo de banco de dados
-    port: process.env.DB_PORT || 3306,  // Porta padrão do MySQL (ou defina uma porta personalizada)
-    logging: false              // Desativa logs detalhados do SQL
+    host: process.env.localhost,  // Host do MySQL (remoto ou localhost)
+    dialect: 'mysql',           // Especifica que estamos usando MySQL
+    port: process.env.DB_PORT || 5432,  // Porta do MySQL (geralmente 3306)
+    logging: false              // Desativa logs detalhados de SQL no console
   }
 );
 
