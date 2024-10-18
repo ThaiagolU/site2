@@ -6,7 +6,7 @@ import authRoutes from './routes/auth.js';
 dotenv.config();  // Carrega variáveis de ambiente do arquivo .env
 
 const app = express();
-const PORT = process.env.PORT || 3000;  // Use a porta fornecida pelo Render ou uma padrão
+const PORT = process.env.PORT || 3306;  // Use a porta fornecida pelo Render ou uma padrão
 
 // Middleware para lidar com JSON
 app.use(express.json());
