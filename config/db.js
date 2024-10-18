@@ -12,7 +12,7 @@ const sequelize = new Sequelize(
   {
     host: process.env.localhost,  // Host do MySQL (remoto ou localhost)
     dialect: 'mysql',           // Especifica que estamos usando MySQL
-    port: process.env.DB_PORT || 5432,  // Porta do MySQL (geralmente 3306)
+    port: process.env.DB_PORT || 10000,  // Porta do MySQL (geralmente 3306)
     logging: false              // Desativa logs detalhados de SQL no console
   }
 );
