@@ -1,31 +1,28 @@
-import { DataTypes } from 'sequelize';
-import sequelize from '../config/db.js';
+import mongoose from 'mongoose';
 
-// Definir o modelo de Usuário usando Sequelize
-const User = sequelize.define('User', {
+// Definir o esquema de Usuário
+const UserSchema = new mongoose.Schema({
   name: {
-    type: DataTypes.STRING,
-    allowNull: false
+    type: String,
+    required: [true, 'Nome é obrigatório'],  // Nome é obrigatório
+    minlength: [3, 'O nome deve ter pelo menos 3 caracteres']  // Nome com mínimo de 3 caracteres
   },
   email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-    validate: {
-      isEmail: true  // Validação de email
-    }
+    type: String,
+    required: [true, 'Email é obrigatório'],  // Email é obrigatório
+    unique: true,  // Email deve ser único no banco de dados
+    match: [/\S+@\S+\.\S+/, 'Email inválido']  // Validação de formato de email
   },
   password: {
-    type: DataTypes.STRING,
-    allowNull: false
+    type: String,
+    required: [true, 'Senha é obrigatória'],  // Senha é obrigatória
+    minlength: [6, 'A senha deve ter no mínimo 6 caracteres']  // Senha com no mínimo 6 caracteres
   },
-  created_at: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW
+  createdAt: {
+    type: Date,
+    default: Date.now  // A data de criação é registrada automaticamente
   }
-}, {
-  tableName: 'users',  // Nome da tabela no MySQL
-  timestamps: false  // Desativar timestamps automáticos do Sequelize
 });
 
-export default User;
+// Exportar o modelo de Usuário (a coleção no MongoDB será chamada de 'users')
+export default mongoose.model('User', UserSchema);

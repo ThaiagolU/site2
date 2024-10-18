@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Loja</title>
+    <link rel="stylesheet" href="styles2.css">
+    
+    
+    <script>
+        let carrinho = [];
+        let total = 0;
+
+        function toggleCarrinho() {
+            const carrinhoSidebar = document.getElementById('carrinho-sidebar');
+            carrinhoSidebar.classList.toggle('open');
+        }
+
+        function adicionarAoCarrinho(nome, preco) {
+            const produtoExistente = carrinho.find(item => item.nome === nome);
+            if (produtoExistente) {
+                produtoExistente.quantidade++;
+            } else {
+                carrinho.push({ nome, preco, quantidade: 1 });
+            }
+            atualizarCarrinho();
+        }
+
+        function aumentarQuantidade(index) {
+            carrinho[index].quantidade++;
+            atualizarCarrinho();
+        }
+
+        function diminuirQuantidade(index) {
+            if (carrinho[index].quantidade > 1) {
+                carrinho[index].quantidade--;
+            } else {
+                carrinho.splice(index, 1); // Remove o item se a quantidade chegar a 0
+            }
+            atualizarCarrinho();
+        }
+
+        function atualizarCarrinho() {
+            const listaCarrinho = document.getElementById('lista-carrinho');
+            const totalCarrinho = document.getElementById('total-carrinho');
+            let total = 0;
+            
+            listaCarrinho.innerHTML = '';
+            carrinho.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    ${item.nome} - R$ ${item.preco.toFixed(2)} x ${item.quantidade}
+                    <span class="botoes-quantidade">
+                        <button onclick="aumentarQuantidade(${index})">+</button>
+                        <button onclick="diminuirQuantidade(${index})">-</button>
+                    </span>
+                `;
+                listaCarrinho.appendChild(li);
+                total += item.preco * item.quantidade;
+            });
+
+            totalCarrinho.textContent = total.toFixed(2);
+        }
+
+        function fazerPedido() {
+            alert('Pedido realizado com sucesso!');
+            carrinho = []; // Limpa o carrinho após o pedido
+            atualizarCarrinho();
+        }
+    </script>
+</head>
+<body>
+
+    <!-- Header com nome da loja, botões de login/cadastro e carrinho -->
+    <header>
+        <div class="header-container">
+            <h1>Minha Loja</h1>
+            <nav>
+                <a href="login.html" class="btn">Login</a>
+                <a href="register.html" class="btn">Cadastrar</a>
+                <!-- Ícone do carrinho posicionado no header -->
+                <button id="abrir-carrinho-btn" class="btn carrinho-header-icon" onclick="toggleCarrinho()">🛒 Carrinho</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Seção de categorias e produtos -->
+    <main>
+        <!-- Eletrônicos -->
+        <section class="categoria">
+            <h2>Eletrônicos</h2>
+            <div class="produtos-container">
+                <div class="produtos-carrossel">
+                    <div class="produto">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS33qvYedbcGeXLZ0umeUPhQSis4e6FU5DozQ&s" alt="Produto 1">
+                        <h3>Produto 1</h3>
+                        <p>R$ 199,99</p>
+                        <button class="comprar-btn" onclick="adicionarAoCarrinho('Produto 1', 199.99)">Comprar</button>
+                    </div>
+                    <div class="produto">
+                        <img src="https://m.media-amazon.com/images/I/51IhPik2ZcL._AC_.jpg" alt="Produto 2">
+                        <h3>Produto 2</h3>
+                        <p>R$ 299,99</p>
+                        <button class="comprar-btn" onclick="adicionarAoCarrinho('Produto 2', 299.99)">Comprar</button>
+                    </div>
+                    <div class="produto">
+                        <img src="https://www.usinainfo.com.br/1012962-thickbox_default/multimetro-capacimetro-digital-com-32-escalas-dt9205a-cat-ii-1000v.jpg" alt="Produto 3">
+                        <h3>Produto 3</h3>
+                        <p>R$ 399,99</p>
+                        <button class="comprar-btn" onclick="adicionarAoCarrinho('Produto 3', 399.99)">Comprar</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Móveis -->
+        <section class="categoria">
+            <h2>Móveis</h2>
+            <div class="produtos-container">
+                <div class="produtos-carrossel">
+                    <div class="produto">
+                        <img src="https://example.com/img/cadeira.jpg" alt="Cadeira de Escritório">
+                        <h3>Cadeira de Escritório</h3>
+                        <p>R$ 249,99</p>
+                        <button class="comprar-btn" onclick="adicionarAoCarrinho('Cadeira de Escritório', 249.99)">Comprar</button>
+                    </div>
+                    <div class="produto">
+                        <img src="https://example.com/img/sofa.jpg" alt="Sofá 3 Lugares">
+                        <h3>Sofá 3 Lugares</h3>
+                        <p>R$ 1.299,99</p>
+                        <button class="comprar-btn" onclick="adicionarAoCarrinho('Sofá 3 Lugares', 1299.99)">Comprar</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Roupas -->
+        <section class="categoria">
+            <h2>Roupas</h2>
+            <div class="produtos-container">
+                <div class="produtos-carrossel">
+                    <div class="produto">
+                        <img src="https://example.com/img/camiseta.jpg" alt="Camiseta">
+                        <h3>Camiseta</h3>
+                        <p>R$ 49,99</p>
+                        <button class="comprar-btn" onclick="adicionarAoCarrinho('Camiseta', 49.99)">Comprar</button>
+                    </div>
+                    <div class="produto">
+                        <img src="https://example.com/img/jaqueta.jpg" alt="Jaqueta de Couro">
+                        <h3>Jaqueta de Couro</h3>
+                        <p>R$ 499,99</p>
+                        <button class="comprar-btn" onclick="adicionarAoCarrinho('Jaqueta de Couro', 499.99)">Comprar</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Carrinho fixo na lateral -->
+        <div id="carrinho-sidebar" class="carrinho">
+            <div class="carrinho-header">
+                <h2>Carrinho de Compras</h2>
+                <button class="fechar-carrinho" onclick="toggleCarrinho()">✖</button>
+            </div>
+            <div class="carrinho-body">
+                <ul id="lista-carrinho"></ul>
+            </div>
+            <div class="carrinho-footer">
+                <p>Total: R$ <span id="total-carrinho">0.00</span></p>
+                <button class="comprar-btn" onclick="fazerPedido()">Fazer Pedido</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer simples -->
+    <footer>
+        <p>&copy; 2024 Minha Loja. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function fazerPedido() {
+            alert('Pedido realizado com sucesso!');
+            carrinho = []; // Limpa o carrinho após o pedido
+            atualizarCarrinho();
+        }
+    </script>
+</body>
+</html>

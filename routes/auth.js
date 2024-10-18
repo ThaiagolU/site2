@@ -1,7 +1,7 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js';  // Modelo atualizado para usar Sequelize
+import User from '../models/User.js';
 
 const router = express.Router();
 
@@ -11,7 +11,7 @@ router.post('/register', async (req, res) => {
 
   try {
     // Verificar se o usuário já está cadastrado
-    const existingUser = await User.findOne({ where: { email } });
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: 'Usuário já cadastrado' });
     }
@@ -20,11 +20,13 @@ router.post('/register', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Criar novo usuário
-    const newUser = await User.create({ name, email, password: hashedPassword });
-    res.status(201).json({ message: 'Usuário cadastrado com sucesso', userId: newUser.id });
+    const newUser = new User({ name, email, password: hashedPassword });
+    await newUser.save();
+
+    return res.status(201).json({ message: 'Usuário cadastrado com sucesso' });
   } catch (error) {
     console.error('Erro no cadastro:', error.message);
-    res.status(500).json({ message: 'Erro no servidor ao tentar cadastrar usuário' });
+    return res.status(500).json({ message: 'Erro no servidor ao tentar cadastrar usuário', error: error.message });
   }
 });
 
@@ -34,7 +36,7 @@ router.post('/login', async (req, res) => {
 
   try {
     // Verificar se o usuário existe
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: 'Usuário não encontrado' });
     }
@@ -46,11 +48,12 @@ router.post('/login', async (req, res) => {
     }
 
     // Gerar o token JWT
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token, message: 'Login bem-sucedido' });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+    return res.json({ token, message: 'Login bem-sucedido' });
   } catch (error) {
     console.error('Erro no login:', error.message);
-    res.status(500).json({ message: 'Erro no servidor ao tentar fazer login' });
+    return res.status(500).json({ message: 'Erro no servidor ao tentar fazer login', error: error.message });
   }
 });
 
